@@ -1,66 +1,64 @@
-let input = document.getElementById('inputTarefa')
-let btnAdd = document.getElementById('btn-add')
-let main= document.getElementById('areaLista')
-let contador = 0
+let contador = 0;
+let input = document.getElementById("inputTarefa");
+let btnAdd = document.getElementById("btn-add");
+let main = document.getElementById("areaLista");
 
-function addTarefa(){
-    //pegar o valor digitado no input
-    let valorInput = input.value
+function addTarefa() {
 
-    //se nao for vazio nem nulo nem indefinido
-    if((valorInput !=="") && (valorInput !==null) && (valorInput !==undefined)){
+  let valorInput = input.value;
 
-        ++contador
+  if (valorInput !== "" && valorInput !== null && valorInput !== undefined) {
+    ++contador;
 
-        let novoItem = `<div id="${contador}" class="item">
-
-            <div onclick="marcarTarefa(${contador})" class="item-icone">
-                <i id="icone_${contador}" class="material-symbols-outlined">circle</i>
-            </div>
-
-            <div onclick="marcarTarefa(${contador})" class="item-nome">
+    let novoItem = `<div id="${contador}" class="item">
+        <div onclick="marcarTarefa(${contador})" class="item-icone">
+            <i id="icone_${contador}" class="mdi mdi-circle-outline"></i>
+        </div>
+        <div onclick="marcarTarefa(${contador})" class="item-nome">
             ${valorInput}
-            </div>
+        </div>
+        <div class="item-botao">
+            <button onclick="deletar(${contador})" class="delete"><i class="mdi mdi-delete"></i> Deletar</button>
+        </div>
+    </div>`;
 
-            <div class="item-botao">
-                <button onclick="deletar(${contador})" class="delete">
-                <i class="material-symbols-outlined">delete</i>
-                Deletar</button>
-            </div>
-        </div>`
+    main.innerHTML += novoItem;
 
-        //adicionar novo item no main
-        main.innerHTML += novoItem
-
-        //zerar os campos
-        input.value = ""
-        input.focus()
-
-    }
+    input.value = "";
+    input.focus();
+  }
 }
 
-function deletar(id){
-    let tarefa = document.getElementById(id)
-    tarefa.remove()
+function deletar(id) {
+  let tarefa = document.getElementById(id);
+  tarefa.remove();
 }
 
-function marcarTarefa(id){
-    let item = document.getElementById('id')
-    let classe = item.getAttribute('class')
+function marcarTarefa(id) {
+  let item = document.getElementById(id);
+  let classe = item.getAttribute("class");
+  console.log(classe);
 
-    if(classe=="item"){
-        item.classList.add('clicado')
+  if (classe == "item") {
+    item.classList.add("clicado");
 
-        let icone = document.getElementById('icone_'+id)
-        icone.classList.remove('')
-        icone.classList.add('')
-    }
+    let icone = document.getElementById("icone_" + id);
+    icone.classList.remove("mdi-circle-outline");
+    icone.classList.add("mdi-check-circle");
+
+    item.parentNode.appendChild(item);
+  } else {
+    item.classList.remove("clicado");
+
+    let icone = document.getElementById("icone_" + id);
+    icone.classList.remove("mdi-check-circle");
+    icone.classList.add("mdi-circle-outline");
+  }
 }
 
 input.addEventListener("keyup", function (event) {
-    //se teclou enter 13
-    if (event.keyCode === 13) {
-        event.preventDefault()
-        btnAdd.click()
-    }
-})
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    btnAdd.click();
+  }
+});
